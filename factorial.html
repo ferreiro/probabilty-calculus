@@ -1,0 +1,60 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Factorial</title>
+  <meta name="description" content="Factorial">
+  <meta name="author" content="Jorge Ferreiro">
+
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+
+<body>
+
+    <div id="content">
+
+        <h3>Factorial (k!)</h3>
+        <h4></h4>
+
+        <form name="factorial" onsubmit="calculate(); return false;" id="factorialForm">
+
+          <input type='text' id="number1" placeholder="k" />
+          <p><span id="result">Introduce your k!</span></p>
+
+        </form>
+        
+
+    </div>
+
+    <script type="text/javascript">
+    // your page initialization code here
+    // the DOM will be available here
+
+
+     // Binomial coefficient
+     // Credits: github.com/jgferreiro
+ 
+     function calculate() {
+         a = document.getElementById('number1').value;
+
+         if (a == "") a = 1; // input is not filled. We assume 1 by default.
+
+         total = fact(a);
+         document.getElementById('result').innerHTML = "Factorial of " + a + " is <b>" + total + "</b>";
+     }
+
+
+     // Factorial function.
+     function fact(x) {
+        if(x==0) return 1;
+        return x * fact(x-1);
+     }
+
+    </script>
+
+
+</body>
+</html>
