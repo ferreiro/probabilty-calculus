@@ -1,0 +1,86 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Binomial coefficient</title>
+  <meta name="description" content="Binomial coefficient">
+  <meta name="author" content="Jorge Ferreiro">
+
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+
+<body>
+
+    <div id="content"> 
+
+        <h3>Binomial coefficient</h3>
+        <h4><img src="http://www.danielsoper.com/statcalc3/img/formula_binomial_coefficient_full.png" /></h4>
+
+        <form name="binomial" id="binomialForm">
+
+          <input type='text' id="number1" placeholder="a" />
+          <input type='text' id="number2" placeholder="b" />
+          <p>Result <b><span id="result"></span></b></p>
+
+        </form>
+        
+
+    </div>
+    
+
+
+
+    <script type="text/javascript">
+    // your page initialization code here
+    // the DOM will be available here
+
+
+     // Binomial coefficient
+     // Credits: github.com/jgferreiro
+
+     setInterval(function(){ 
+         calculateBinomial();        
+     }, 500);
+
+     function calculateBinomial() {
+         a = document.getElementById('number1').value;
+         b = document.getElementById('number2').value;
+         if (a == "") a = 1; // input is not filled. We assume 1 by default.
+         if (b == "") b = 1; // power input is not filled. We assume 1 by default.
+         total = binom(a, b);
+         // total = binomialCoefficient(a, b);
+         document.getElementById('result').innerHTML = total;
+     }
+
+     // Returns the binomial coefficient
+     // where a is the total set of posibbilites
+     // and b is the number of combinatios we're interested in
+
+     function binomialCoefficient(a, b) {
+       numerator = fact(a);
+       denominator = fact(a-b) *  fact(b);
+       return numerator / denominator;
+     }
+
+     // New implementation using roseta code | http://rosettacode.org/wiki/Evaluate_binomial_coefficients#JavaScript
+     function binom(n, k) {
+         var coeff = 1;
+         for (var i = n-k+1; i <= n; i++) coeff *= i;
+         for (var i = 1;     i <= k; i++) coeff /= i;
+         return coeff;
+     }
+
+     // Factorial function.
+     function fact(x) {
+        if(x==0) return 1;
+        return x * fact(x-1);
+     }
+
+    </script>
+
+
+</body>
+</html>

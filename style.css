@@ -1,0 +1,70 @@
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+      font-family: arial;
+    }
+    h1, h2, h3, h4 {
+
+      margin: 0.5em 0;
+      padding: 0;
+    }
+    input, option {
+      padding: 1em;
+    }
+    #content {
+        -ms-transform: translate(-50%, -50%); /* IE 9 */
+        -webkit-transform: translate(-50%, -50%); /* Chrome, Safari, Opera */
+        transform: translate(-50%, -50%);
+        position: absolute;
+        left: 50%;
+        top: 50%; 
+
+    }
+    #content h4 {
+      font-size: 12px;
+      margin-top: 0;
+      margin-bottom: 1em;
+      font-style: italic;
+      color: rgba(0,0,0,.5);
+    }
+    #content p {
+      font-size: 16px;
+    }
+    .result { 
+      margin-top: 1em;
+      padding: 1em 0;
+      text-align: left;
+    }
+    .resultChanged {
+        -webkit-transition: all 400ms linear;
+        -moz-transition: all 400ms linear;
+        -ms-transition: all 400ms linear;
+        -o-transition: all 400ms linear;
+        transition: all 400ms linear;
+        background: #EBFFF1;
+    }
+
+    /* Left and right pannels */
+    .fixedPannel {
+      position:absolute; 
+
+    }
+    .fixedPannel-left {
+      left:1em; 
+      top:1em;
+    }
+    .fixedPannel-right {
+      right:1em; 
+      top:1em;
+    }
+    .addonBox { 
+      -webkit-box-shadow: 1px 1px 7px -1px rgba(0,0,0,0.53);
+      -moz-box-shadow: 1px 1px 7px -1px rgba(0,0,0,0.53);
+      box-shadow: 1px 1px 7px -1px rgba(0,0,0,0.53);
+      padding: 1.2em 0;
+      margin-bottom: 1em;
+    }
+    .addonBox iframe {
+
+    }

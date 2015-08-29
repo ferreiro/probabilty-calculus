@@ -1,0 +1,60 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Binomial coefficient</title>
+  <meta name="description" content="Binomial coefficient">
+  <meta name="author" content="Jorge Ferreiro">
+
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+
+<body>
+
+    <div id="content">
+
+        <h3>Laplace's rules</h3>
+        <h4>Nos da la probabilidad de obtener un caso favorable entre todos los casos que tenemos</h4>
+
+        <form name="laplace" id="laplaceForm">
+
+          <input type='text' id="number1" placeholder="Casos favorables" />
+          <input type='text' id="number2" placeholder="Casos totales" />
+          <p>Probability <b><span id="result"></span></b></p>
+
+        </form>
+        
+
+    </div>
+
+    <script type="text/javascript">
+    // your page initialization code here
+    // the DOM will be available here
+
+
+     // Binomial coefficient
+     // Credits: github.com/jgferreiro
+
+     setInterval(function(){ 
+         calculate();        
+     }, 500);
+
+     function calculate() {
+         a = document.getElementById('number1').value;
+         b = document.getElementById('number2').value;
+
+         if (a == "") a = 1; // input is not filled. We assume 1 by default.
+         if (b == "") b = 1; // power input is not filled. We assume 1 by default.
+
+         total = a / b;
+         document.getElementById('result').innerHTML = total;
+     }
+
+    </script>
+
+
+</body>
+</html>

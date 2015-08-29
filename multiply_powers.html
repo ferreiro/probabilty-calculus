@@ -1,0 +1,157 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Probabily and stadistics formulas</title>
+  <meta name="description" content="Probabily and stadistics formulas">
+  <meta name="author" content="Jorge Ferreiro">
+
+  <link rel="stylesheet" href="style.css"> 
+</head>
+
+<body>
+
+
+    <div class="fixedPannel fixedPannel-left">
+      
+
+      <div class="addonBox" id="binomial">
+        <iframe width="100%" height="260px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="binomial.html#content">
+        </iframe>
+      </div> 
+
+      <div class="addonBox" id="binomial">
+        <iframe width="100%" height="250px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="laplace_rules.html#content">
+        </iframe>
+      </div> 
+
+    </div>
+
+    <div id="content">
+
+        <h2>Multiply, add or substract</h2>
+
+        <form name="multiply_powers">
+
+          <p>Operation type:</p>
+           <select id="operation" >
+            <option value='*'>(*) Multiplication</option>
+            <option value='/'>(/) Division</option>
+            <option value='+'>(+) Addition</option>
+            <option value='-'>(-) Substract</option>
+          </select>
+          <span onclick="clearAllInputs(); return false;">clear</span>
+
+
+          <p>First operator:</p>
+          <input type='text' id="number1" placeholder="Valor" />
+          <input type='text' id="number1_power" placeholder="Potencia" />
+
+          <p>Second operator:</p>
+          <input type='text' id="number2" placeholder="Valor" />
+          <input type='text' id="number2_power" placeholder="Potencia" />
+
+          <p>Third operator operator:</p>
+          <input type='text' id="number3" placeholder="Valor" />
+          <input type='text' id="number3_power" placeholder="Potencia" />
+
+        </form>
+
+        <div class="result" id="result">
+            <p>Result <b><span id="resultValue"></span></b></p>
+        </div>
+    
+    </div>
+    
+ 
+
+    <script type="text/javascript"> 
+
+     // Binomial coefficient
+     // Credits: github.com/jgferreiro
+
+     setInterval(function(){ 
+         calculatePowers();        
+     }, 300);
+
+     // Clear all the inputs for the calculator
+
+     function clearAllInputs() {
+        var inputs = document.getElementsByTagName('input');
+
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].value = "";
+        }
+     }
+
+     // Sumamos los 3 numeros con su respectiva potencia.
+     // En el caso de que algun numero no tenga potencia, no se elevará.
+     function calculatePowers() {
+        var number; // The number for each operator
+        var power; // Number to make the power of the base number
+        var result = document.getElementById('result');
+        var previousResultValue = document.getElementById('resultValue').innerHTML;
+        var total = 0;
+
+        // Getting the operation type thourgh select box
+
+        e = document.getElementById('operation');
+        operation = e.options[e.selectedIndex].value;
+
+        // Calculating in variables a, b, c (operators)
+        // the power of the base number
+
+        number = document.getElementById('number1').value;
+        power = document.getElementById('number1_power').value;
+        if (power == "") power = 1; // power input is not filled. We assume 1 by default.
+        a = Math.pow(number, power);
+        
+
+        number = document.getElementById('number2').value;
+        power = document.getElementById('number2_power').value;
+        if (power == "") power = 1; // power input is not filled. We assume 1 by default.
+        if (operation == "/" && number == "") number = 1;
+        b = Math.pow(number, power);
+
+        number = document.getElementById('number3').value;
+        power = document.getElementById('number3_power').value;
+        if (power == "") power = 1; // power input is not filled. We assume 1 by default.
+        if (operation == "/" && number == "") number = 1;
+        c = Math.pow(number, power); 
+
+        // Then. Depending on the operation type,
+        // we multiply, sum....
+
+        if (operation == '*' || operation == 'x') {
+            total = a * b * c;
+        }
+        else if (operation == '+' || operation == 'sum') {
+            total = (a + b + c);
+        }
+        else if (operation == '-' || operation == 'sub') {
+            total = (a - b - c);
+        }
+
+        else if (operation == '/' || operation == 'div') {
+            total = (a / b) / c;
+        }
+
+        // Setting the new result to the form
+        if (total != previousResultValue) {
+          result.classList.add("resultChanged");
+        }
+        else {
+          result.classList.remove("resultChanged");
+
+        }
+        document.getElementById('resultValue').innerHTML = total;
+ 
+     }
+
+    </script>
+
+
+</body>
+</html>
