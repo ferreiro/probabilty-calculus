@@ -57,15 +57,15 @@
  
           <p>First operator:</p>
           <input type='text' id="number1" placeholder="Valor" />
-          <input type='text' id="number1_power" placeholder="Potencia" />
+          <input type='text' id="number2" placeholder="Potencia" />
 
           <p>Second operator:</p>
-          <input type='text' id="number2" placeholder="Valor" />
-          <input type='text' id="number2_power" placeholder="Potencia" />
+          <input type='text' id="number3" placeholder="Valor" />
+          <input type='text' id="number4" placeholder="Potencia" />
 
           <p>Third operator operator:</p>
-          <input type='text' id="number3" placeholder="Valor" />
-          <input type='text' id="number3_power" placeholder="Potencia" />
+          <input type='text' id="number5" placeholder="Valor" />
+          <input type='text' id="number6" placeholder="Potencia" />
 
         </form>
 
@@ -83,8 +83,16 @@
      // Credits: github.com/jgferreiro
 
      setInterval(function(){ 
-         calculatePowers();        
+         updateResult();        
      }, 300);
+
+
+     function updateResult() {
+        updateInputsArrays(); // Actualizar array con los nuevos valores de base y potencia para cada input.
+        newResult = calculateTotal(); // Calculate the new Result.
+        updatingResults(newResult);
+     }
+
 
      // Clear all the inputs for the calculator
 
@@ -98,40 +106,85 @@
 
      var currentOperation = "*"; // Multiplication is the default operation
 
-     function updateTitleWithOperation(operation) {
-        var newTitle = "";
+     // Creating the arrays where storing the new values for the inputs.
 
-        switch (operation) {
-            case "*":
-              newTitle += "multiplication";
-              break;
-            case "/":
-              newTitle += "division";
-              break;
-            case "+":
-              newTitle += "addition";
-              break;
-            case "-":
-              newTitle += "substraction";
+     var inputsArr;  // bidimensional array where row is individual fields and rows are (value and power) 
+     var inputs = document.getElementsByTagName('input');
+     createInputsArrays();
+
+     function createInputsArrays() {
+
+        inputsArr = new Array(); // Each position of the array correspond to each input. Where [0] = input1 | [1] = input1Power | [2] = input2 | [3] = input2_power
+
+        // Keeping each inputs on a bidimensional array. 
+        // Each row represents the input with power of the form [0][0] = input1 | [0][1] = input1Power
+        // currentRow = 0;
+
+        for (var i = 0; i < inputs.length; i++) {
+            var inputValue = inputs[i].value;
+            var currentRow = currentRow || 0;
+            if (i % 2 == 0) {
+              inputsArr[currentRow] = new Array(); // Create a "column" array.
+              inputsArr[currentRow][0] = inputValue;
+            }
+            else {
+              inputsArr[currentRow][1] = inputValue; // Save the input value on the array... First position is the input value, second the power.
+              currentRow++; // Go to the next row.
+            }        
+
         }
-        document.getElementById('currentOperationTitle').innerHTML = newTitle;
+        console.log(inputsArr);
      }
 
-     // Sumamos los 3 numeros con su respectiva potencia.
-     // En el caso de que algun numero no tenga potencia, no se elevará.
-     function calculatePowers() {
-        var number; // The number for each operator
-        var power; // Number to make the power of the base number
-        var result = document.getElementById('result');
-        var previousResultValue = document.getElementById('resultValue').innerHTML;
-        var total = 0;
+     // Traverse all the inputs for the webpage. And save the result in the corresponding array.
 
-        // Getting the operation type thourgh select box
+     function updateInputsArrays() {
+        for (var i = 0; i < inputsArr.length; i++) {
+            var inputsField = inputsArr[i]; // Input field is composed by number and power.
+            for (var j = 0; j < inputsArr[i].length; j++) {
+                var inputNumber = 'number'+ (i + j); // example: number1: takes the value for the input.
+                console.log(inputNumber);
+                var value = document.getElementById(inputNumber).value;
 
-        e = document.getElementById('operation');
+                if (value == "") value = 1; // power input is not filled. We assume 1 by default.
+                if (value == "e") value = 2.718281828;
+
+                if (value != inputsField[j]) {
+                   inputsField[j] = value; // Saving the current element to the column if the value has changed.
+                }
+            }
+        }
+     }
+
+     // Changing the view with the new result. Updates it content
+
+     function updatingResults(newResult) {
+        var previousResult = document.getElementById('resultValue').innerHTML;
+
+        if (newResult != previousResult) result.classList.add("resultChanged");
+        else result.classList.remove("resultChanged");
+        document.getElementById('resultValue').innerHTML = newResult; // Changing the text with the new result.
+     }
+
+     // Returns an array of powers, where each index is the power of base and p. 
+     function calculatePowers(inputsArr) {
+        p = new Array();
+
+        for (var i = 0; i < inputsArr.length; i++) {
+           pow = Math.pow(inputsArr[i][0], inputsArr[i][1]); // base number | power.
+           p.push(pow);
+        }
+
+        return p; // Array of powers
+     }
+
+     // Caculate the total result (add, substrac, multiply). For our inputs Arr.
+
+     function calculateTotal() {
+        e = document.getElementById('operation'); // Get the current operation with the option select.
         operation = e.options[e.selectedIndex].value;
 
-        updateTitleWithOperation(operation); // update web title with current operation
+        // updateTitleWithOperation(operation); // update web title with current operation
 
         if (currentOperation != operation) {
             clearAllInputs(); // Clear all the inputs for the calculator
@@ -140,57 +193,26 @@
             return; // exit this function
         }
 
-        // Calculating in variables a, b, c (operators)
-        // the power of the base number
+        // Powers array
+        var powers = calculatePowers(inputsArr);
+        total = 1;
 
-        number = document.getElementById('number1').value;
-        power = document.getElementById('number1_power').value;
-        if (power == "") power = 1; // power input is not filled. We assume 1 by default.
-        if (number == "e")  number = 2.718281828;
-        a = Math.pow(number, power);
+        for (var i = 0; i < powers.length; i++) {
+            if (operation == '*' || operation == 'x') {
+                total *= powers[i]; // a * b * c
+            }
+            else if (operation == '+' || operation == 'sum') {
+                total += powers[i];
+            }
+            else if (operation == '-' || operation == 'sub') {
+                total -= powers[i];
+            }
+            else if (operation == '/' || operation == 'div') {
+                total /= powers[i];
+            }
+        }
         
-
-        number = document.getElementById('number2').value;
-        power = document.getElementById('number2_power').value;
-        if (power == "") power = 1; // power input is not filled. We assume 1 by default.
-        if (number == "e")  number = 2.718281828;
-        else if (number == "" && (operation == "/" || operation == "*")) number = 1;
-        b = Math.pow(number, power);
-
-        number = document.getElementById('number3').value;
-        power = document.getElementById('number3_power').value;
-        if (power == "") power = 1; // power input is not filled. We assume 1 by default.
-        if (number == "e")  number = 2.718281828;
-        else if (number == "" && (operation == "/" || operation == "*")) number = 1;
-        c = Math.pow(number, power); 
-
-        // Then. Depending on the operation type,
-        // we multiply, sum....
-
-        if (operation == '*' || operation == 'x') {
-            total = a * b * c;
-        }
-        else if (operation == '+' || operation == 'sum') {
-            total = (a + b + c);
-        }
-        else if (operation == '-' || operation == 'sub') {
-            total = (a - b - c);
-        }
-
-        else if (operation == '/' || operation == 'div') {
-            total = (a / b) / c;
-        }
-
-        // Setting the new result to the form
-        if (total != previousResultValue) {
-          result.classList.add("resultChanged");
-        }
-        else {
-          result.classList.remove("resultChanged");
-
-        }
-        document.getElementById('resultValue').innerHTML = total;
- 
+        return total;  
      }
 
     </script>
